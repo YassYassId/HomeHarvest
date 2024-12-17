@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     private final UserRepository userRepository;
+
+    public UserController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<JwtAuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
@@ -31,6 +35,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest signInRequest) {
+        System.out.println("SignInRequest: " + signInRequest);
         JwtAuthenticationResponse response = userService.signin(signInRequest);
         return ResponseEntity.ok(response);
     }

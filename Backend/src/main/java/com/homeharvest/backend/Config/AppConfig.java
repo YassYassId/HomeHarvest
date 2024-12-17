@@ -39,7 +39,7 @@ public class AppConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable and configure CORS
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/auth/login","/api/auth/register")
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/auth/login","/api/auth/register","/api/sensor-data")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -71,7 +71,6 @@ public class AppConfig {
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 

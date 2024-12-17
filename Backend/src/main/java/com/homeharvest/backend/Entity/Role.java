@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 
 @Getter
-@RequiredArgsConstructor
 public enum Role {
 
     USER(Collections.emptySet()),
@@ -21,11 +20,16 @@ public enum Role {
             Permission.ADMIN_CREATE,
             Permission.ADMIN_DELETE
     ));
+
     private final Set<Permission> permissions;
 
+    // Explicit constructor for the Role enum
+    Role(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
     public List<SimpleGrantedAuthority> getAuthorities() {
-        var authorities = getPermissions()
-                .stream()
+        var authorities = permissions.stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toList());
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
